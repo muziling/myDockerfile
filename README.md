@@ -2,28 +2,16 @@
 
 ## 参考
 
-https://github.com/victor141516/telegram-cli-downloader/blob/master/Dockerfile
+- https://github.com/ubidots/docker-telegram-cli/blob/master/Dockerfile
+- https://github.com/victor141516/telegram-cli-downloader/blob/master/Dockerfile
 
 ## 使用方法
 
-- 启动docker，进入docker，执行交互命令进行登录
-
+- Generate public key from https://my.telegram.org/auth?to=apps and save to file tg-server.pub
+- Start docker with parameter or setting RUN_PARAM: -k tg-server.pub --tcp-port 2391 --daemonize --disable-auto-accept --disable-readline --disable-output --disable-colors --accept-any-tcp
+- Exec follow script if you need to auto checkin 
 ```
-telegram-cli -k /tg/tg-server.pub
-```
-
-- 登录成功后，停止docker，配置启动参数RUN_PARAM为：
-
-```
--k /tg/tg-server.pub -P 1234
-```
-
-然后启动docker。
-
-- 使用类似以下脚本进行tg指令交互
-
-```
-nc localhost 1234 <<EOF
-msg CCCAT-bot /checkin
+netcat localhost 2391 <<EOF
+msg Test-bot /checkin
 EOF
 ```

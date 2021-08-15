@@ -1,47 +1,23 @@
-FROM alpine as builder
+FROM alpine:latest as build
 
-RUN apk upgrade --no-cache && apk add --no-cache apk-tools \
-    musl \
-    libcrypto1.1 \
-    libssl1.1 \
-    ca-certificates-cacert \
-    musl-utils \
-    libconfig-dev \
-    libevent-dev \
-    jansson-dev \
-    ncurses-terminfo-base \
-    ncurses-libs \
-    readline-dev \
-    libressl-dev \
-    python3-dev \
-    libgcrypt-dev \
-    zlib-dev \
-    lua-lgi \
-    make \
-    git \
-    g++ \
-    lua-dev && \
-    git clone --recursive https://github.com/kenorb-contrib/tg.git && \
-    cd tg && \
-    ./configure LDFLAGS="-Wl,--allow-multiple-definition" && make
+RUN apk --no-cache add readline readline-dev libconfig libconfig-dev lua \
+                       lua-dev luajit-dev luajit openssl openssl-dev \
+                       build-base libevent libevent-dev python3-dev \
+                       jansson jansson-dev git zlib-dev
 
-FROM alpine
+RUN git clone --depth 1 --recursive https://github.com/kenorb-contrib/tg.git
 
-VOLUME [ "/tg" ]
-EXPOSE 1234
+WORKDIR /tg
+RUN ./configure LDFLAGS="-Wl,--allow-multiple-definition" && make
 
+FROM alpine:latest
+
+RUN apk add --no-cache libevent jansson libconfig libexecinfo \
+                       readline lua openssl
+
+COPY --from=build /tg/bin/telegram-cli /bin/telegram-cli
+
+EXPOSE 2391
 ENV RUN_PARAM ""
 
-RUN mkdir /tg
-
-RUN apk add --no-cache libcrypto1.1 \
-    libconfig \
-    libevent \
-    libressl \
-    lua \
-    jansson \
-    readline
-
-COPY --from=builder /tg/bin/telegram-cli /usr/bin/telegram-cli
-
-CMD /usr/bin/telegram-cli $RUN_PARAM
+CMD telegram-cli $RUN_PARAM
