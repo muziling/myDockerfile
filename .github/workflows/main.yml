@@ -1,11 +1,7 @@
-name: BuildDockerfileImage
+name: python
 
 on: 
-  release:
-    types: [published]
-
-  watch:
-    types: [started]
+  workflow_dispatch:
 
 jobs:
   build-and-push:
