@@ -1,15 +1,9 @@
-FROM alpine
+FROM tiangolo/uvicorn-gunicorn:python3.11-slim
 
-LABEL maintainer="pieceking@qq.com"
+LABEL maintainer="Sebastian Ramirez <tiangolo@gmail.com>"
 
-RUN apk update 
-RUN apk add yarn --no-cache
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install --no-cache-dir requests
 
-COPY rootCA.* /root/.anyproxy/certificates/
-
-RUN yarn global add anyproxy &&\
-    yarn cache clean
-
-EXPOSE 8001 8002
-
-ENTRYPOINT anyproxy --intercept --ws-intercept --rule /root/anyproxy.js
+COPY ./app /app
