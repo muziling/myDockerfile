@@ -1,0 +1,49 @@
+name: BuildDockerfileImage
+
+on: 
+  release:
+    types: [published]
+    
+  workflow_dispatch:
+  
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download package
+        run: |
+          sudo apt-get -y install unzip
+          wget https://github.com/nilaoda/N_m3u8DL-RE/releases/download/v0.2.0-beta/N_m3u8DL-RE_Beta_linux-x64_20230628.tar.gz
+          tar zxvf N_m3u8DL-RE_Beta_linux-x64_20230628.tar.gz 
+          wget https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz
+          xz -d ffmpeg-master-latest-linux64-gpl.tar.xz
+          tar xvf ffmpeg-master-latest-linux64-gpl.tar
+          wget https://github.com/shaka-project/shaka-packager/releases/download/v2.6.1/packager-linux-x64
+          wget https://www.bok.net/Bento4/binaries/Bento4-SDK-1-6-0-641.x86_64-unknown-linux.zip
+          unzip Bento4-SDK-1-6-0-641.x86_64-unknown-linux.zip
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: 构建并推送到 Dockerhub 镜像仓库
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile # Dockerfile 位置
+          platforms: linux/amd64
+          push: true
+          tags: | # 改成你自己的， dockerhub用户名/镜像名
+            muziling/stream-drm
+
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: muziling/stream-drm
