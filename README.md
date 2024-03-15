@@ -35,3 +35,8 @@ channels.json example:
 These json item value pass to N_m3u8DL-RE
 
 Start docker, browser open setted `env HTTP_ADDR value` 
+
+Usage example:
+```shell
+docker run --name=stream-drm --env=TZ=Asia/Shanghai --env=HTTP_ADDR=http://192.168.1.6:5590 --volume=/mnt/user/appdata/channels.json:/app/channels.json:ro --volume=/dev/shm:/tmp/cache:rw --network=bridge -p 5590:8080 muziling/stream-drm
+```

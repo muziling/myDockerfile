@@ -1,6 +1,6 @@
 # FROM --platform=linux/amd64 ubuntu/dotnet-runtime:edge as build1
 FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/runtime:8.0-jammy as build1
-RUN apt-get install coreutils
+RUN apt-get install -y coreutils
 
 COPY --chmod=755 ./N_m3u8DL-RE_Beta_linux-x64/N_m3u8DL-RE /app/m3u8dl
 COPY --chmod=755 ./ffmpeg-master-latest-linux64-gpl/bin/ffmpeg /app/ffmpeg
