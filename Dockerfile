@@ -16,7 +16,8 @@ COPY --chmod=755 ./m3u8-linux-arm64 /app/m3u8_
 
 
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
-  rm -f /app/*_; \
+  rm -f /app/*_ && \
+  ls -l /app; \
 fi
 
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
@@ -24,7 +25,8 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
   mv /app/ffmpeg_ /app/ffmpeg && \
   mv /app/shaka-packager_ /app/shaka-packager && \
   mv /app/m3u8_ /app/m3u8 && \
-  rm -f /app/mp4decrypt; \
+  rm -f /app/mp4decrypt && \
+  ls -l /app; \
 fi
 
 FROM scratch
