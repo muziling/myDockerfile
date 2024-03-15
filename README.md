@@ -5,7 +5,8 @@ Map follow parameter yourself:
 - video stream cache dir /tmp/cache in docker
 - read channel config file /app/channels.json in docker
 
-set env HTTP_ADDR to your addr
+set env `HTTP_ADDR` to your addr
+default connect limit is 10, set env `CONN_LIMIT` to modify
 
 channels.json example:
 ```json
@@ -34,7 +35,7 @@ channels.json example:
 ```
 These json item value pass to N_m3u8DL-RE
 
-Start docker, browser open setted `env HTTP_ADDR value` 
+Start docker, browser open setted env `HTTP_ADDR` value
 
 Usage example:
 ```shell
