@@ -1,5 +1,5 @@
 # FROM --platform=linux/amd64 ubuntu/dotnet-runtime:edge as build1
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/runtime:8.0-jammy as build1
+FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime:8.0-jammy as build1
 ARG TARGETARCH
 RUN apt-get install -y coreutils
 
