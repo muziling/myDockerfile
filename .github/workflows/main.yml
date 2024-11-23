@@ -12,10 +12,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
+        
+      - uses: actions/download-artifact@v4
+        with:
+         name: N_m3u8DL-RE_Beta-artifact
+         github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
+         repository: nilaoda/N_m3u8DL-RE
+         run-id: 11954691686
+         
+      - name: Display structure of downloaded files
+        run: ls -l
+  
       - name: Download package
         run: |
-          sudo apt-get -y install unzip
+          sudo apt-get -y install unzip123
           wget https://github.com/nilaoda/N_m3u8DL-RE/releases/download/v0.2.0-beta/N_m3u8DL-RE_Beta_linux-x64_20230628.tar.gz
           tar zxvf N_m3u8DL-RE_Beta_linux-x64_20230628.tar.gz 
           wget https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz
