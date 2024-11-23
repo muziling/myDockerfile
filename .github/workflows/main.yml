@@ -19,20 +19,8 @@ jobs:
          repository: nilaoda/N_m3u8DL-RE
          run-id: 11954691686
 
-      - name: Download artifact
-        run: |
-         curl -u ${{ secrets.GH_PAT }} \
-         -L -o artifact.zip \
-         https://github.com/nilaoda/N_m3u8DL-RE/actions/runs/11954691686/artifacts/2218977287
-    
-      - name: Download artifact
-        run: |
-         curl -u ${{ secrets.GH_PAT }} \
-         -L -o artifact2.zip \
-         https://api.github.com/repos/nilaoda/N_m3u8DL-RE/actions/artifacts/2218977287/zip
-    
       - name: Display structure of downloaded files
-        run: ls -l
+        run: find .
   
       - name: Download package
         run: |
